@@ -1,14 +1,10 @@
-﻿using System.Collections;
+﻿
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TilePlacer : MonoBehaviour
+public class TilePlacer : AbstractTilePlacer
 {
-    public Vector2Int MapSize;
-    public List<VoxelTile> tilePrefabs;
-
-    private VoxelTile [,] spawnedTiles;
     private List<VoxelTile> [,] possibleTiles;
     private Queue<Vector2Int> tilesToRecalc = new Queue<Vector2Int>();
 
@@ -17,68 +13,24 @@ public class TilePlacer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            for (int x = 1; x < MapSize.x - 1; x++)
-            {
-                for (int y = 1; y < MapSize.y - 1; y++)
-                {
-                    if (spawnedTiles[x, y] == null) continue;
-                    Destroy(spawnedTiles[x, y].gameObject);
-                    spawnedTiles[x, y] = null;
-                }
-            }
+            
             Generate();
             PlaceAllTiles();
         }
     }
-    void Start()
+
+    public override void Generate()
     {
-
-        spawnedTiles = new VoxelTile[MapSize.x, MapSize.y];
-
-        foreach (VoxelTile tile in tilePrefabs)
+        spawnedTiles = new VoxelTile[MapSize.x,MapSize.y];
+        for (int x = 1; x < MapSize.x - 1; x++)
         {
-            tile.CalculateColors();
-        }
-
-        int tilesBeforeAdding = tilePrefabs.Count;
-        VoxelTile clone;
-        for (int i = 0; i < tilesBeforeAdding; i++)
-        {
-            switch (tilePrefabs[i].rotationType)
+            for (int y = 1; y < MapSize.y - 1; y++)
             {
-                case VoxelTile.RotationType.TwoRotations:
-                    tilePrefabs[i].Weight /= 2;
-                    clone = Instantiate(tilePrefabs[i], tilePrefabs[i].transform.position + Vector3.back, Quaternion.identity);
-                    clone.Rotate();
-                    tilePrefabs.Add(clone);
-                    break;
-                case VoxelTile.RotationType.FourRotations:
-                    tilePrefabs[i].Weight /= 4;
-                    clone = Instantiate(tilePrefabs[i], tilePrefabs[i].transform.position + Vector3.back, Quaternion.identity);
-                    clone.Rotate();
-                    tilePrefabs.Add(clone);
-                    clone = Instantiate(tilePrefabs[i], tilePrefabs[i].transform.position + Vector3.back * 2, Quaternion.identity);
-                    clone.Rotate();
-                    clone.Rotate();
-                    tilePrefabs.Add(clone);
-                    clone = Instantiate(tilePrefabs[i], tilePrefabs[i].transform.position + Vector3.back * 3, Quaternion.identity);
-                    clone.Rotate();
-                    clone.Rotate();
-                    clone.Rotate();
-                    tilePrefabs.Add(clone);
-                    break;
-                default:
-                    break;
+                Destroy(spawnedTiles[x, y]?.gameObject);
+                spawnedTiles[x, y] = null;
             }
         }
-
-
-        Generate();
-        PlaceAllTiles();
-    }
-
-    private void Generate()
-    {
+        
         possibleTiles = new List<VoxelTile>[MapSize.x, MapSize.y];
 
         for (int x = 0; x < MapSize.x; x++)
@@ -136,6 +88,13 @@ public class TilePlacer : MonoBehaviour
             }
             if (possibleTiles[maxPos.x, maxPos.y].Count <= 1) break;
         } while (iterationsLimit-- > 0);
+        
+        PlaceAllTiles();
+    }
+
+    public override void SetTilePrefabs(List<VoxelTile> tilePrefs)
+    {
+        tilePrefabs = tilePrefs;
     }
 
     private void EnqueueNeighbours(Vector2Int pos)
@@ -228,7 +187,7 @@ public class TilePlacer : MonoBehaviour
 
         //if (tile == null) return;
 
-        Vector3 position = new Vector3(x, 0, y) * tile.TileSize * tile.VoxelSideSize;
+        Vector3 position = new Vector3(x, 0, y) * (tile.TileSize * tile.VoxelSideSize);
         spawnedTiles[x,y] = Instantiate(tile,position,tile.transform.rotation);
     }
 
