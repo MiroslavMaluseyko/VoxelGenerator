@@ -7,15 +7,9 @@ public class TilePlacerSimple : AbstractTilePlacer
 {
     public override void Generate()
     {
-        spawnedTiles = new VoxelTile[MapSize.x,MapSize.y];
-        for(int x = 1;x<MapSize.x - 1;x++)
-        {
-            for (int y = 1; y < MapSize.y - 1; y++)
-            {
-                Destroy(spawnedTiles[x, y]?.gameObject);
-                spawnedTiles[x, y] = null;
-            }
-        }
+        Clear();
+        if(spawnedTiles == null)spawnedTiles = new VoxelTile[MapSize.x,MapSize.y];
+        
         for(int x = 1;x < MapSize.x - 1;x++)
             for (int y = 1; y < MapSize.y - 1; y++)
             {

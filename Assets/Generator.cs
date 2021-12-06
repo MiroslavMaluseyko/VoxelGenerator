@@ -20,10 +20,17 @@ public class Generator : MonoBehaviour
     public GenerationType genType;
     
     public List<VoxelTile> tilePrefabs;
-    
+    private AbstractTilePlacer placer;
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            placer.Generate();
+        }
+    }
+
     void Start()
     {
-        AbstractTilePlacer placer;
         switch (genType)
         {
             case GenerationType.WCF:

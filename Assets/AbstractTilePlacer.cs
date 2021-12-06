@@ -10,6 +10,18 @@ public abstract class AbstractTilePlacer : MonoBehaviour
     protected VoxelTile[,] spawnedTiles;
     public abstract void Generate();
     public abstract void SetTilePrefabs(List<VoxelTile> tilePrefs);
+    public void Clear()
+    {
+        if (spawnedTiles == null) return;
+        for(int x = 1;x<MapSize.x - 1;x++)
+        {
+            for (int y = 1; y < MapSize.y - 1; y++)
+            {
+                Destroy(spawnedTiles[x, y]?.gameObject);
+                spawnedTiles[x, y] = null;
+            }
+        }
+    }
     protected bool CanAppendTile(VoxelTile tileToAppend, VoxelTile existingTile, Direction dir)
     {
 
@@ -45,4 +57,5 @@ public abstract class AbstractTilePlacer : MonoBehaviour
         }
         return true;
     }
+    
 }

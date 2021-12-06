@@ -8,28 +8,10 @@ public class TilePlacer : AbstractTilePlacer
     private List<VoxelTile> [,] possibleTiles;
     private Queue<Vector2Int> tilesToRecalc = new Queue<Vector2Int>();
 
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            
-            Generate();
-            PlaceAllTiles();
-        }
-    }
-
     public override void Generate()
     {
-        spawnedTiles = new VoxelTile[MapSize.x,MapSize.y];
-        for (int x = 1; x < MapSize.x - 1; x++)
-        {
-            for (int y = 1; y < MapSize.y - 1; y++)
-            {
-                Destroy(spawnedTiles[x, y]?.gameObject);
-                spawnedTiles[x, y] = null;
-            }
-        }
+        Clear();
+        if(spawnedTiles == null)spawnedTiles = new VoxelTile[MapSize.x,MapSize.y];
         
         possibleTiles = new List<VoxelTile>[MapSize.x, MapSize.y];
 
