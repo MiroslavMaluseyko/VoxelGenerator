@@ -4,11 +4,10 @@
     <list default="true" id="52ae4ede-4305-4363-a5d6-790ef1b0bb76" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.VoxelGenerator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.VoxelGenerator/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AbstractTilePlacer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AbstractTilePlacer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Direction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Direction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Generator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TilePlacer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TilePlacer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TilePlacerSimple.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TilePlacerSimple.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +24,9 @@
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Assets/ITilePlacer.cs" />
-      <option value="$PROJECT_DIR$/Assets/Generator.cs" />
-      <option value="$PROJECT_DIR$/Assets/TilePlacer.cs" />
       <option value="$PROJECT_DIR$/Assets/TilePlacerSimple.cs" />
+      <option value="$PROJECT_DIR$/Assets/TilePlacer.cs" />
+      <option value="$PROJECT_DIR$/Assets/Generator.cs" />
       <option value="$PROJECT_DIR$/Assets/AbstractTilePlacer.cs" />
     </changedPaths>
   </component>
@@ -73,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1638821191655</updated>
-      <workItem from="1638821198874" duration="7821000" />
+      <workItem from="1638821198874" duration="9260000" />
     </task>
     <servers />
   </component>

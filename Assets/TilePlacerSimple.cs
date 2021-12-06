@@ -18,10 +18,6 @@ public class TilePlacerSimple : AbstractTilePlacer
 
     }
     
-    public override void SetTilePrefabs(List<VoxelTile> tilePrefs)
-    {
-        tilePrefabs = tilePrefs;
-    }
 
     private void PlaceTile(int x, int y)
     {

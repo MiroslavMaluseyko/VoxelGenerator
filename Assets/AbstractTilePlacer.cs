@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public abstract class AbstractTilePlacer : MonoBehaviour
 {
@@ -9,7 +10,10 @@ public abstract class AbstractTilePlacer : MonoBehaviour
     protected List<VoxelTile> tilePrefabs;
     protected VoxelTile[,] spawnedTiles;
     public abstract void Generate();
-    public abstract void SetTilePrefabs(List<VoxelTile> tilePrefs);
+    public void SetTilePrefabs(List<VoxelTile> tilePrefs)
+    {
+        tilePrefabs = tilePrefs;
+    }
     public void Clear()
     {
         if (spawnedTiles == null) return;

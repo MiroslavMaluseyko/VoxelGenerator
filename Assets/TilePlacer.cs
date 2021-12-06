@@ -74,11 +74,6 @@ public class TilePlacer : AbstractTilePlacer
         PlaceAllTiles();
     }
 
-    public override void SetTilePrefabs(List<VoxelTile> tilePrefs)
-    {
-        tilePrefabs = tilePrefs;
-    }
-
     private void EnqueueNeighbours(Vector2Int pos)
     {
         tilesToRecalc.Enqueue(pos + Vector2Int.right);

@@ -50,7 +50,7 @@ public class Generator : MonoBehaviour
     }
     private void TilePreprocess()
     {
-        
+        tilePrefabs = tilePrefabs.FindAll(t=>t.gameObject.activeInHierarchy);
         foreach (VoxelTile tile in tilePrefabs)
         {
             tile.CalculateColors();
