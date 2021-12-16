@@ -1,37 +1,45 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 public abstract class AbstractTilePlacer : MonoBehaviour
 {
     
-    public Vector2Int MapSize;
-    protected List<VoxelTile> tilePrefabs;
-    protected VoxelTile[,] spawnedTiles;
+    private Vector2Int _mapSize;
+    protected Vector2Int CurrMapSize;
+    protected List<VoxelTile> TilePrefabs;
+    protected VoxelTile[,] SpawnedTiles;
     public abstract void Generate();
     public void SetTilePrefabs(List<VoxelTile> tilePrefs)
     {
-        tilePrefabs = tilePrefs;
+        TilePrefabs = tilePrefs;
     }
     public void Clear()
     {
-        if (spawnedTiles == null) return;
-        for(int x = 1;x<MapSize.x - 1;x++)
+        if (SpawnedTiles == null)
         {
-            for (int y = 1; y < MapSize.y - 1; y++)
+            CurrMapSize = _mapSize;
+            SpawnedTiles = new VoxelTile[CurrMapSize.x,CurrMapSize.y];
+            return;
+        }
+        for(int x = 1;x<CurrMapSize.x - 1;x++)
+        {
+            for (int y = 1; y < CurrMapSize.y - 1; y++)
             {
-                Destroy(spawnedTiles[x, y]?.gameObject);
-                spawnedTiles[x, y] = null;
+                Destroy(SpawnedTiles[x, y]?.gameObject);
+                SpawnedTiles[x, y] = null;
             }
         }
+        if(CurrMapSize.x > _mapSize.x || CurrMapSize.y > _mapSize.y)
+            SpawnedTiles = new VoxelTile[_mapSize.x,_mapSize.y];
+        CurrMapSize = _mapSize;
     }
     protected bool CanAppendTile(VoxelTile tileToAppend, VoxelTile existingTile, Direction dir)
     {
 
         if (existingTile == null) return true;
 
-        int size = existingTile.TileSize;
+        int size = existingTile.tileSize;
         for (int layer = 0; layer < size; layer++)
         {
             for (int offset = 0; offset < size; offset++)
@@ -60,6 +68,11 @@ public abstract class AbstractTilePlacer : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public void SetMapSize(Vector2Int ms)
+    {
+        _mapSize = ms;
     }
     
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Generator : MonoBehaviour
 {
@@ -16,18 +18,12 @@ public class Generator : MonoBehaviour
     public TilePlacer wcfPlacer;
     public TilePlacerSimple simplePlacer;
     
-    [Header("Generation settings")]
+    [Header("Generation default settings")]
     public GenerationType genType;
-    
     public List<VoxelTile> tilePrefabs;
-    private AbstractTilePlacer placer;
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.R))
-        {
-            placer.Generate();
-        }
-    }
+    
+    private Vector2Int _mapSize;
+    private AbstractTilePlacer _placer;
 
     void Start()
     {
@@ -35,19 +31,34 @@ public class Generator : MonoBehaviour
         {
             case GenerationType.WCF:
                 wcfPlacer.gameObject.SetActive(true);
-                placer = wcfPlacer;
+                simplePlacer.gameObject.SetActive(false);
+                _placer = wcfPlacer;
                 break;
             case GenerationType.brutforce:
+                wcfPlacer.gameObject.SetActive(false);
                 simplePlacer.gameObject.SetActive(true);
-                placer = simplePlacer;
+                _placer = simplePlacer;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
         TilePreprocess();
-        placer.SetTilePrefabs(tilePrefabs);
-        placer.Generate();
+        _placer.SetTilePrefabs(tilePrefabs);
+        Generate();
     }
+
+    public void Generate()
+    {
+        _mapSize = UIManager.MapSize;
+        _placer.SetMapSize(_mapSize);
+        _placer.Generate();
+    }
+
+    public void Test()
+    {
+        Debug.Log("Aboba");
+    }
+    //calculating tile`s voxels colors and rotating them
     private void TilePreprocess()
     {
         tilePrefabs = tilePrefabs.FindAll(t=>t.gameObject.activeInHierarchy);
@@ -63,13 +74,13 @@ public class Generator : MonoBehaviour
             switch (tilePrefabs[i].rotationType)
             {
                 case VoxelTile.RotationType.TwoRotations:
-                    tilePrefabs[i].Weight /= 2;
+                    tilePrefabs[i].weight /= 2;
                     clone = Instantiate(tilePrefabs[i], tilePrefabs[i].transform.position + Vector3.back, Quaternion.identity);
                     clone.Rotate();
                     tilePrefabs.Add(clone);
                     break;
                 case VoxelTile.RotationType.FourRotations:
-                    tilePrefabs[i].Weight /= 4;
+                    tilePrefabs[i].weight /= 4;
                     clone = Instantiate(tilePrefabs[i], tilePrefabs[i].transform.position + Vector3.back, Quaternion.identity);
                     clone.Rotate();
                     tilePrefabs.Add(clone);

@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class VoxelTile : MonoBehaviour
 {
-    public int TileSize = 8;
-    public float VoxelSideSize = 0.1f;
+    //size in voxels
+    public int tileSize = 8;
+    public float voxelSideSize = 0.1f;
 
+    //Tile weight for generation
     [Range(0,100)]
-    public int Weight = 50;
-
+    public int weight = 50;
+    
+    //how many different tiles can be obtained by rotation
     public RotationType rotationType;
     public enum RotationType
     {
@@ -18,6 +21,7 @@ public class VoxelTile : MonoBehaviour
         FourRotations
     }
 
+    //voxel color on each tile side
     [HideInInspector]
     public byte[] colorsLeft;
     [HideInInspector]
@@ -26,23 +30,23 @@ public class VoxelTile : MonoBehaviour
     public byte[] colorsRight;
     [HideInInspector]
     public byte[] colorsBack;
-
-
+    
+    
     public void CalculateColors()
     {
-        colorsLeft = new byte[TileSize*TileSize];
-        colorsForward = new byte[TileSize*TileSize];
-        colorsRight = new byte[TileSize*TileSize];
-        colorsBack = new byte[TileSize*TileSize];
+        colorsLeft = new byte[tileSize*tileSize];
+        colorsForward = new byte[tileSize*tileSize];
+        colorsRight = new byte[tileSize*tileSize];
+        colorsBack = new byte[tileSize*tileSize];
 
-        for(int layer = 0;layer<TileSize;layer++)
+        for(int layer = 0;layer<tileSize;layer++)
         {
-            for(int offset = 0;offset<TileSize;offset++)
+            for(int offset = 0;offset<tileSize;offset++)
             {
-                colorsLeft[layer*TileSize + offset] = GetVoxelColor(layer,offset,Direction.Left);
-                colorsForward[layer*TileSize + offset] = GetVoxelColor(layer,offset,Direction.Forward);
-                colorsRight[layer*TileSize + offset] = GetVoxelColor(layer,offset,Direction.Right);
-                colorsBack[layer*TileSize + offset] = GetVoxelColor(layer,offset,Direction.Back);
+                colorsLeft[layer*tileSize + offset] = GetVoxelColor(layer,offset,Direction.Left);
+                colorsForward[layer*tileSize + offset] = GetVoxelColor(layer,offset,Direction.Forward);
+                colorsRight[layer*tileSize + offset] = GetVoxelColor(layer,offset,Direction.Right);
+                colorsBack[layer*tileSize + offset] = GetVoxelColor(layer,offset,Direction.Back);
             }
 
         }
@@ -51,7 +55,7 @@ public class VoxelTile : MonoBehaviour
     public void Rotate()
     {
         gameObject.transform.Rotate(0, 90, 0);
-        int totalVoxels = TileSize * TileSize;
+        int totalVoxels = tileSize * tileSize;
 
         for(int i = 0;i<totalVoxels;i++)
         {
@@ -68,7 +72,7 @@ public class VoxelTile : MonoBehaviour
     {
         var meshCollider = GetComponentInChildren<MeshCollider>();
 
-        float vox = VoxelSideSize;
+        float vox = voxelSideSize;
         float half = vox / 2;
 
 
@@ -84,7 +88,7 @@ public class VoxelTile : MonoBehaviour
                 break;
             case Direction.Back:
                 rayStart = meshCollider.bounds.min +
-                    new Vector3(TileSize*vox - (half + offset * vox), 0, -half);
+                    new Vector3(tileSize*vox - (half + offset * vox), 0, -half);
                 rayDirection = Vector3.forward;
                 break;
             case Direction.Right:
@@ -94,7 +98,7 @@ public class VoxelTile : MonoBehaviour
                 break;
             case Direction.Forward:
                 rayStart = meshCollider.bounds.max +
-                    new Vector3(-TileSize*vox + half + offset*vox,0,half);
+                    new Vector3(-tileSize*vox + half + offset*vox,0,half);
                 rayDirection = Vector3.back;
                 break;
             default:
@@ -106,8 +110,6 @@ public class VoxelTile : MonoBehaviour
 
 
         rayStart.y = meshCollider.bounds.min.y + layer * vox + half;
-
-        //Debug.DrawRay(rayStart,rayDirection*vox,Color.green,2);
 
         if(Physics.Raycast(new Ray(rayStart,rayDirection), out RaycastHit hit, vox))
         {
